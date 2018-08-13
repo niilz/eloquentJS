@@ -48,24 +48,6 @@ class VillageState {
     }
 }
 
-let first = new VillageState(
-    "Post Office",
-    [{place: "Post Office", address: "Alice's House"}]
-    //{place: "Bob's House", address: "Town Hall"}]
-);
-
-let next = first.move("Alice's House");
-let next2 = next.move("Bob's House");
-let next3 = next2.move("Town Hall");
-
-console.log(first.parcels);
-console.log(next.place);
-console.log(next.parcels);
-//   console.log(next2.place);
-//   console.log(next2.parcels);
-//   console.log(next3.place);
-//   console.log(next3.parcels);
-console.log(first.place);
 
 function runRobot(state, robot, memory) {
     for (let turn = 0;; turn++) {
@@ -105,14 +87,12 @@ VillageState.random = function(parcelCount = 5) {
 //this runs the robot that takes a random road
 //runRobot(VillageState.random(), randomRobot);
 
-//an optimized mail-delivery path
 const mailRoute = [
     "Alice's House", "Cabin", "Alice's House", "Bob's House",
     "Town Hall", "Daria's House", "Ernie's House",
     "Grete's House", "Shop", "Grete's House", "Farm",
     "Marketplace", "Post Office"
 ];
-
 //the robot that runs a specific road
 function routeRobot(state, memory) {
     if (memory.length == 0) {
@@ -121,8 +101,6 @@ function routeRobot(state, memory) {
     return {direction: memory[0], memory: memory.slice(1)}
 }
 
-//the robot that runs the optimized road
-//runRobot(VillageState.random(), routeRobot, []);
 
 //the function that finds the best route
 function findRoute(graph, from, to) {
@@ -150,4 +128,38 @@ function goalOrientedRobot({place, parcels}, route) {
     return {direction: route[0], memory: route.slice(1)};
 }
 
-runRobot(VillageState.random(), goalOrientedRobot, []);
+
+function compareRobots(robot_1, memory_1, robot_2, memory_2) {
+    let turns_1 = [];
+    let turns_2 = [];
+    for (let i = 0; i < 100; i++) {  
+        let state_1 = VillageState.random();
+        let state_2 = state_1
+        //robot_1 
+        for (let turn = 0;; turn++) {
+            if (state_1.parcels.length == 0) {
+                turns_1.push(turn);
+                break;
+            }
+            let action = robot_1(state_1, memory_1);
+            state_1 = state_1.move(action.direction);
+            memory_1 = action.memory;
+        }
+        //robot_2 
+        for (let turn = 0;; turn++) {
+            if (state_2.parcels.length == 0) {
+                turns_2.push(turn);
+                break;
+            }
+            let action = robot_2(state_2, memory_2);
+            state_2 = state_2.move(action.direction);
+            memory_2 = action.memory;
+        }
+    }
+    let sumTurns_1 = turns_1.reduce((sum, turn) => sum += turn, 0);
+    let sumTurns_2 = turns_2.reduce((sum, turn) => sum += turn, 0);
+    console.log(`mean_1: ${sumTurns_1 / turns_1.length}`);
+    console.log(`mean_2: ${sumTurns_2 / turns_2.length}`);
+}
+
+compareRobots(goalOrientedRobot, [], routeRobot, []);
