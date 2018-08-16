@@ -10,9 +10,12 @@ class PGroup {
     }
 
     delete(item) {
+        ////either this was:
         // let front = this.values.slice(0, this.values.indexOf(item));
         // let back = this.values.slice(this.values.indexOf(item) + 1);
         //return new PGroup(front.concat(back));
+
+        ////but this way is better:
         let deleted = this.values.filter(v => v != item);
         return new PGroup(deleted);
     }
