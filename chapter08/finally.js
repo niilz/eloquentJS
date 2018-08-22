@@ -12,7 +12,7 @@ function getAccount() {
     return accountName;
 }
 
-function transfer(from, amoun) {
+function transfer(from, amount) {
     if (accounts[from] < amount) return;
     let progress = 0;
     try {
