@@ -18,6 +18,8 @@ function withBoxUnlocked(body) {
     }
 }
 
+//the book wants that I return body(). But actually without it it works just fine in this case. Proof me wrong ;)
+
 withBoxUnlocked(function() {
     box.content.push("gold piece");
 });
