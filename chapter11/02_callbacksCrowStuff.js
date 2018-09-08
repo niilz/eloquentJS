@@ -210,3 +210,4 @@ async function findInStorage(nest, name) {
 
 findInStorage(bigOak, "events on 2017-12-21")
     .then(console.log);
+
