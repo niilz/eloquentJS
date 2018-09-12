@@ -146,4 +146,52 @@ requestType("route", (nest, {target, type, content}) => {
     return routeRequest(nest, target, type, content);
 });
 
-routeRequest(bigOak, "Gilles' Garden", "note", "Incoming jackdawsPUPU")
+routeRequest(bigOak, "Gilles' Garden", "note", "Incoming jackdawsPUPU");
+
+requestType("storage", (nest, name) => storage(nest, name));
+
+// function findInStorage(nest, name) {
+//     return storage(nest, name).then(foung => {
+//         if (found != null) return found;
+//         else return findInRemoteStorage(nest, name);
+//     });
+// }
+
+function network(nest) {
+    return Array.from(nest.state.connections.keys());
+}
+
+// function finInRemoteStorage(nest, name) {
+//     let sources = network(nest).filter(n => n != nest.name);
+//     function next() {
+//         if (source.length == 0) {
+//             return Promise.reject(new Error("Not found"));
+//         } else {
+//             let source = source[Math.floor(Math.random() * source.length)];
+//             sources = source.filter(n => n != source);
+//             return routeRequest(nest, source, "storage", name)
+//                 .then(value => value != null ? value : next(), next);
+//         }
+//     }
+//     return next();
+// }
+
+// alternatively with async
+async function findInStorage(nest, name) {
+    let local = await storage(nest, name)
+    if (local != null) return local;
+
+    let sources = network(nest).filter(n => n != nest.name);
+    while (sources.length > 0) {
+        let source = sources[Math.floor(Math.random() * sources.length)];
+        sources = sources.filter(n => n != source);
+        try {
+            let found = await routeRequest(nest, source, "storage", name);
+            if (found != null) return found;
+        } catch (_) {}
+    }
+    throw new Error("Not found");
+}
+
+findInStorage(bigOak, "events on 2017-12-21")
+    .then(console.log);
