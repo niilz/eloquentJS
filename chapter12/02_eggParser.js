@@ -19,9 +19,8 @@ function parseExpression(program) {
 }
 
 function skipSpace(string) {
-    let first = string.search(/\S/);
-    if (first == -1) return "";
-    return string.slice(first);
+    let stuffToSkip = string.match(/^(\s|#.*)*/);
+    return string.slice(stuffToSkip[0].length);
 }
 
 
