@@ -131,14 +131,14 @@ module.exports = {
     run: run,
 };
 
-topScope.array = args => {
-    return args.split(",");
+topScope.array = (...args) => {
+    return args;
 };
 
 topScope.length = arr => {
     return arr.length;
-}
+};
 
 topScope.element = (arr, num) => {
     return arr[num];
-}
+};
