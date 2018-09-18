@@ -11,7 +11,7 @@ function parseExpression(program) {
     } else if (match = /^\d+\b/.exec(program)) { // matches values that are numbers
         expr = {type: "value", value: Number(match[0])};
     } else if (match = /^[^\s(),#"]+/.exec(program)) { // matches words without special characters
-        expr = {tpye: "word", name: match[0]};
+        expr = {type: "word", name: match[0]};
     } else new SyntaxError("Unexpected snytax: " + program); // if none of those types, throw SyntaxError
     
     // passes what is found to parseApply with object for the expression (defined below)
