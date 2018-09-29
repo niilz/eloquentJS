@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Table creator</title>
+</head>
+<body>
+    <h1>Mountains</h1>
+    <div id="mountains"></div>
+
+    <script>
+        const MOUNTAINS = [
+            {name: "Kilimanjaro", height: 5895, place: "Tanzania"},
+            {name: "Everest", height: 8848, place: "Nepal"},
+            {name: "Mount Fuji", height: 3776, place: "Japan"},
+            {name: "Vaalserberg", height: 323, place: "Netherlands"},
+            {name: "Denali", height: 6168, place: "United States"},
+            {name: "Popocatepetl", height: 5465, place: "Mexico"},
+            {name: "Mont Blanc", height: 4808, place: "Italy/France"}
+        ];
+
+    
+    function buildTable(items) {
+        let mountainTable = document.querySelector("#mountains");
+        // create table
+        let table = document.createElement("TABLE");
+        mountainTable.appendChild(table);
+        // set headings
+        let firstRow = document.createElement("TR");
+        table.appendChild(firstRow);
+
+        let headings = Object.keys(items[0]);
+        headings.forEach(heading => {
+            //console.log(heading);
+            let h = document.createElement("TH");
+            h.innerHTML = heading;
+            firstRow.appendChild(h);
+        })
+        for (let obj of items) {
+            let nextRow = document.createElement("TR");
+            table.appendChild(nextRow);
+            Object.values(obj).forEach(v => {
+                let data = document.createElement("TD");
+                data.innerHTML = v;
+                table.lastChild.append(data);
+                if (typeof v == "number") {
+                    data.style.textAlign = "right";
+                }
+            })
+        }
+    }
+    buildTable(MOUNTAINS);
+    </script>
+</body>
+</html>
