@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button>Click me</button>
+    <p>No handler here.</p>
+    <hr>
+    <button class="once">Act-once button</button>
+    <hr>
+    <button class="mouse">me any way you want</button>
+    <script>
+        // Click me Button
+        let button = document.querySelector("button");
+        button.addEventListener("click", () => {
+            console.log("Button clicked.");
+        });
+        // once Button
+        let onceButton = document.querySelector(".once");
+        function once() {
+            console.log("Done");
+            onceButton.removeEventListener("click", once);
+        }
+        onceButton.addEventListener("click", once);
+        
+        // different click-options-Button
+        let mouseButton = document.querySelector(".mouse");
+        mouseButton.addEventListener("mousedown", event=> {
+            if (event.button == 0) {
+                console.log("Left button");
+            } else if (event.button == 1) {
+                console.log("Middle button");
+            } else if (event.button == 2) {
+                console.log("Right button");
+            }
+        });
+
+    </script>
+</body>
+</html>

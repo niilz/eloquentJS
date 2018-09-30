@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <textarea>Type something here...</textarea>
+    <script>
+        // is used so that not every typing fires an event
+        // also used in case time-consuming things are
+        // attached to events that fire often (like "scroll")
+        let textarea = document.querySelector("textarea");
+        let timeout;
+        textarea.addEventListener("input", () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => console.log("Typed!"), 500);
+        });
+
+        // another example where time is spread evenly
+        // show mousepostion every 250ms
+        let scheduled = null;
+        window.addEventListener("mousemove", event => {
+            if (!scheduled) {
+                setTimeout(() => {
+                    document.body.textContent =
+                        `Mouse at ${scheduled.pageX}, ${scheduled.pageY}`;
+                    scheduled = null;
+                }, 250);
+            }
+            scheduled = event;
+        });
+    </script>
+</body>
+</html>
