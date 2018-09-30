@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ballon</title>
+</head>
+<body>
+    <style>
+        #balloon {
+            font-size: 50px;
+            position: relative;
+            top: 15%;
+            left: 50%;
+        }
+    </style>
+    <p id="balloon">🎈</p>
+    <script>
+        let balloon = document.querySelector("#balloon");
+        let size = 50;
+        window.addEventListener("keydown", event => {
+            if (size > 100) {
+                balloon.textContent = "💥";
+                window.removeEventListener("keydown");
+            }
+            else if (event.key == "ArrowUp") {
+                console.log(balloon.style.fontSize);
+                size *= 1.1
+                balloon.style.fontSize = size + "px";
+                event.preventDefault();
+            }
+        });
+        window.addEventListener("keydown", event => {
+            if (event.key == "ArrowDown") {
+                console.log(balloon.style.fontSize);
+                size /= 1.1
+                balloon.style.fontSize = size + "px";
+                event.preventDefault();
+            }
+        });
+    </script>
+    
+</body>
+</html>
