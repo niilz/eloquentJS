@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MouseTrail</title>
+</head>
+<body>
+    <style>
+        .trail {
+            position: absolute;
+            height: 6px; width: 6px;
+            border-radius: 3px;
+            background: teal;
+        }
+        body {
+            height: 300px;
+        }
+    </style>
+    <script>
+        // book version, not to much different from my version
+        let dots = [];
+        for (let i = 0; i < 12; i++) {
+            let node = document.createElement("div");
+            node.className = "trail";
+            document.body.appendChild(node);
+            dots.push(node);
+        }
+        let currentDot = 0;
+
+        window.addEventListener("mousemove", event => {
+            let dot = dots[currentDot];
+            console.log(dot);
+            dot.style.left = (event.clientX - 3) + "px";
+            dot.style.top = (event.pageY - 3) + "px";
+            currentDot = (currentDot + 1) % dots.length;
+        });
+        
+    </script>
+</body>
+</html>

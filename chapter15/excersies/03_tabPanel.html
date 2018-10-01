@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tab Panel</title>
+</head>
+<body>
+    <style>
+        div {
+            display: none;
+            width: 400px;
+            height: 400px;
+            background: beige;
+            text-align: center;
+        }
+        li {
+            display: inline;
+            list-style: none;
+        }
+    </style>
+    <tab-panel>
+        <div data-tabname="one">Tab one</div>
+        <div data-tabname="two">Tab two</div>
+        <div data-tabname="three">Tab three</div>
+    </tab-panel>
+    <script>
+        function asTabs(node) {
+            // create a list for the buttons an attach to tab-panel
+            let bList = document.createElement("ul");
+            node.insertBefore(bList, document.querySelector("div"));
+            // get all tabs, create buttons for them and put them in list-items
+            let data = document.querySelectorAll("div");
+            for (let child of data) {
+                if (child.nodeType == document.ELEMENT_NODE) {
+                    let button = document.createElement("button");
+                    button.textContent = child.attributes["data-tabname"].nodeValue;
+                    let listItem = document.createElement("li");
+                    bList.appendChild(listItem);
+                    listItem.appendChild(button);
+                    // if button is clicked show corresponding data
+                    button.addEventListener("click", () => {
+                        data.forEach(ch => {
+                            if (ch == child) ch.style.display = "inline-block";
+                            else ch.style.display = "none";
+                        });
+                    });
+
+                }
+            }
+        }
+        asTabs(document.querySelector("tab-panel"));
+    </script>
+    
+</body>
+</html>

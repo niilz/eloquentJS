@@ -7,6 +7,32 @@
     <title>MouseTrail</title>
 </head>
 <body>
-    
+    <style>
+        .trail {
+            position: absolute;
+            height: 6px; width: 6px;
+            border-radius: 3px;
+            background: teal;
+        }
+    </style>
+    <script>
+        // fixed number of elements tail which kinda follows the curser
+        let dots = []
+        for (let dot = 0; dots.length <= 20; dot++) {
+                dots[dot] = document.createElement("div");
+                dots[dot].className = "trail";   
+            }
+        let dot = 0;
+        window.addEventListener("mousemove", drawTail);
+        function drawTail(event) {
+            if (dot == 19) dot = 0;
+            let x = event.clientX;
+            let y = event.clientY;
+            dots[dot].style.left = x + "px";
+            dots[dot].style.top = y + "px";
+            document.body.appendChild(dots[dot]);
+            dot++
+        }
+    </script>
 </body>
 </html>

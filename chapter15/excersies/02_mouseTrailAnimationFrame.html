@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MouseTrail</title>
+</head>
+<body>
+    <style>
+        .trail {
+            position: absolute;
+            height: 6px; width: 6px;
+            border-radius: 3px;
+            background: teal;
+        }
+    </style>
+    <script>
+        // fixed number of elements tail which kinda follows the curser
+        // I DIDN'T MAKE IT
+        let dots = []
+        for (let dot = 0; dots.length <= 20; dot++) {
+                dots[dot] = document.createElement("div");
+                dots[dot].className = "trail";   
+            }
+      
+        let dot = 0;
+        let posX = 0;
+        let posY = 0;
+        let nextX = 0;
+        let nextY = 0;
+        let start = null;
+        let angle = 0;
+        window.addEventListener("mousemove", event => {
+            if (dot == 19) dot = 0;
+            posX = nextX;
+            posY = nextY;
+            nextX = event.clientX;
+            nextY = event.clientY;
+            // dots[dot].style.left = posX + "px";
+            // dots[dot].style.top = posY + "px";
+            // document.body.appendChild(dots[dot])
+            dot++;
+            //window.requestAnimationFrame(drawTail);
+        });
+
+        function drawTail(time) {
+            if (start != null) angle += (time - start) * 0.001;
+            start = time;
+            document.body.appendChild(dots[dot]);
+            dots[dot].style.left = nextX + angle + "px";
+            dots[dot].style.top = nextY + angle + "px";
+    
+            window.requestAnimationFrame(drawTail);
+        }
+        window.requestAnimationFrame(drawTail);
+    </script>
+</body>
+</html>
