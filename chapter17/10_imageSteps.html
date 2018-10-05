@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>image steps</title>
+</head>
+<body>
+    <canvas></canvas>
+    <script>
+        // drawImage draws the image in original size by default
+        // two additional arguments set different width and height
+        // nine arguments can be used to only draw a fragment of the img
+        // (second through fith argument = rectangle in source img [x, y, width, height])
+        // (sixth through ninth = rectangle on canvas)
+
+        // each sprite is 24px wide and 30px high
+        let cx = document.querySelector("canvas").getContext("2d");
+        let img = document.createElement("img");
+        img.src = "player_big.png";
+        let spriteW = 48, spriteH = 120;
+        img.addEventListener("load", () => {
+           let cycle = 0;
+            setInterval(() => {
+                cx.clearRect(100, 70, spriteW, spriteH);
+                //flipHorizontally(cx, 100 + spriteW / 2);
+                cx.drawImage(img,
+                            // source rectangle
+                            cycle * spriteW, 0, spriteW, spriteH,
+                            // destination rectangle
+                            100,               70, spriteW, spriteH);
+                cycle = (cycle + 1) % 8;
+            }, 120);
+        });
+
+        function flipHorizontally(context, around) {
+            // turns the coordinates
+            context.translate(around, 0);
+            // flips the img
+            context.scale(-1, 1);
+            // turns the coordinates back
+            context.translate(-around, 0);
+        }
+    </script>
+    
+</body>
+</html>

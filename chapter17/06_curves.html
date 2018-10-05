@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <canvas width="500"></canvas>
+    
+    <script>
+        let cx = document.querySelector("canvas").getContext("2d");
+            cx.beginPath();
+            // start-point
+            cx.moveTo(10, 90);
+            // Direction-point where the curve bends towards to: control=(60, 10)
+            // Actual Endpoint of the curved line: goal=(90, 90)
+            cx.quadraticCurveTo(60, 10, 90, 90);
+            // line to controlpoint
+            cx.lineTo(60, 10);
+            // draws the right line
+            cx.closePath();
+            // actual line stroking
+            cx.stroke();
+
+            // BezierCurveTo has two control-points
+            cx.beginPath();
+            cx.moveTo(110, 90);
+            // control1=(110, 10) control2=(190, 10) goal=(150, 90)
+            cx.bezierCurveTo(110, 10, 190, 10, 150, 90);
+            cx.lineTo(190, 10);
+            cx.lineTo(110, 10);
+            cx.closePath();
+            cx.stroke();
+
+            // arc draws a line which curves around the edges of a circle
+            // starting at 0 going to at least 2PI (6.28) draws a whole circle
+            cx.beginPath();
+            // center=(250, 50) radius=40 angle=0 to 7
+            cx.arc(250, 50, 40, 0, 7);
+            cx.stroke();
+
+            cx.beginPath()
+            // center(350, 50) radius=40 angle=0 to 1/2 PI
+            cx.arc(350, 50, 40, 0, 0.5 * Math.PI);
+            cx.stroke();
+    </script>
+    
+</body>
+</html>
