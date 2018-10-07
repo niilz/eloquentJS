@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shapes</title>
+</head>
+<body>
+    <canvas width="1000" height="200"></canvas>
+    <script>
+        let cx = document.querySelector("canvas").getContext("2d");
+        
+        let elTop = 20;
+        let left = 30;
+
+        function trapezoid(width, height) {
+            left = left;
+            
+            let mostRight = left + width;
+            let mostBottom = elTop + height;
+            let topWidth = width / 4;
+            cx.beginPath();
+            cx.moveTo(left, mostBottom);
+            cx.lineTo(mostRight, mostBottom);
+            cx.lineTo(mostRight - topWidth, elTop);
+            cx.lineTo(left + topWidth, elTop);
+            cx.closePath();
+            cx.stroke();
+        }
+
+        function diamond(size) {
+            left *= 4.5;
+            let centerX = left + size / 2;
+            let centerY = elTop + size / 2;
+
+            cx.save();
+
+            cx.fillStyle = "red";
+            cx.translate(centerX, centerY);
+            cx.rotate(45 * Math.PI / 180);
+            cx.fillRect(-size/2, -size/2, size, size);
+            
+            cx.restore();
+        }
+
+        function zigzagg(width, lines, step) {
+            left *= 1.5;
+            lastStep = elTop;
+            cx.beginPath();
+            cx.moveTo(left, elTop);
+            for (let line = 0; line < lines; line += 2) {
+                cx.lineTo(left + width, lastStep += step);
+                cx.lineTo(left, lastStep += step);
+            }
+            cx.stroke();
+        }
+        
+        function spiral(radius) {
+            left += 70;
+            let centerX = left + radius;
+            let centerY = elTop + radius;
+
+            let degrees = 0;
+
+            cx.beginPath();
+            for (let r = 0; r <= radius; r += 0.5) {
+                cx.lineTo(centerX + r * Math.cos(degrees * Math.PI / 180),
+                          centerY + r * Math.sin(degrees * Math.PI / 180));
+                degrees += 15;
+            }
+
+            cx.stroke();
+        }
+
+        function star(radius, points) {
+            left += 100;
+            let centerX = left + radius;
+            let centerY = elTop + radius;
+
+            let degrees = 360 / points;
+
+            cx.beginPath();
+            cx.strokeStyle = "rgb(255, 200, 0)";
+            for (let d = 0; d <= 360; d += degrees) {
+                cx.quadraticCurveTo(centerX, centerY,
+                                    centerX + radius * Math.cos(d * Math.PI / 180),
+                                    centerY + radius * Math.sin(d * Math.PI / 180));
+            }
+            cx.stroke();
+            cx.fillStyle = "rgb(255, 200, 0)";
+            cx.fill();
+        }
+
+        trapezoid(80, 40);
+        diamond(50);
+        zigzagg(50, 12, 5);
+        spiral(40);
+        star(40, 8);
+
+    </script>
+    
+</body>
+</html>
