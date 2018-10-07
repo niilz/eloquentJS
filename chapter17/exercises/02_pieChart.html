@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pie Chart</title>
+</head>
+<body>
+    <canvas width="600" height="300"></canvas>
+    <script>
+
+        const results = [
+            {name: "Satisfied", count: 1043, color: "lightblue"},
+            {name: "Neutral", count: 563, color: "lightgreen"},
+            {name: "Unsatisfied", count: 510, color: "pink"},
+            {name: "No comment", count: 175, color: "silver"}
+        ];
+
+        let canvas = document.querySelector("canvas");
+        canvas.style.position = "relative";
+        let cx = canvas.getContext("2d");
+        let total = results
+            .reduce((sum, {count}) => sum + count, 0);
+        let currentAngle = -0.5 * Math.PI;
+        let centerX = 300, centerY = 150;
+
+        for (let result of results) {
+            // 2 PI = a whole circle, which it multiplied by the
+            // percentage of the current count
+            let sliceAngle = (result.count / total) * 2 * Math.PI;
+            cx.beginPath();
+            cx.arc(centerX, centerY, 100,
+                   currentAngle, currentAngle + sliceAngle);
+            currentAngle += sliceAngle;
+            cx.lineTo(centerX, centerY);
+            cx.fillStyle = result.color;
+            cx.fill();
+
+            // create labels
+            cx.font = "bold 18px Arial";
+            let name = result.name;
+            let nameWidth = cx.measureText(name).width;
+            cx.textAlign = "center";
+            let labelAngle = currentAngle - sliceAngle / 2;
+            let radius = 120;
+            if (labelAngle > -0.5 && labelAngle < 1.5) radius += nameWidth / 2;
+            else if (labelAngle > 3 && labelAngle < 4) radius += nameWidth / 2;
+            console.log(labelAngle, name);
+            cx.fillText(name, centerX + radius * Math.cos(labelAngle),
+                                     centerY + radius * Math.sin(labelAngle));
+        }
+    </script>
+    
+</body>
+</html>
