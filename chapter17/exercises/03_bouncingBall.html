@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BouncingBall</title>
+</head>
+<body>
+    <canvas width="400" height="400"></canvas>
+    <script>
+        let canvas = document.querySelector("canvas");
+        let cx = canvas.getContext("2d");
+
+        let lastTime = null;
+        function frame(time) {
+            if (lastTime != null) {
+                updateAnimation(Math.min(100, time - lastTime) / 1000);
+            }
+            lastTime = time;
+            requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+
+        class Vec {
+            constructor(x, y) {
+                this.x = x; this.y = y;
+            }
+            plus(right, down) {
+                return new Vec(this.x + right, this.y + down);
+            }
+            times(factor) {
+                return new Vec(this.x * factor, this.y * factor);
+            }
+        }
+        
+        let ballPos = new Vec(100, 100);
+
+        let xS = 40;
+        let yS = 20;
+
+        function updateAnimation(step) {
+            cx.clearRect(0, 0, 400, 400);
+            cx.strokeRect(0, 0, 400, 400);
+            cx.beginPath();
+
+            if (Math.ceil(ballPos.x + 40) == 400) xS *= -1;
+            else if (Math.floor(ballPos.x - 40) == 0) xS *= -1;
+            else if (Math.ceil(ballPos.y + 40) == 400) yS *= -1;
+            else if (Math.floor(ballPos.y - 40) == 0) yS *= -1;
+
+            ballPos.x += xS * step;
+            ballPos.y += yS * step;
+            
+            cx.strokeStyle = "blue";
+            cx.arc(ballPos.x, ballPos.y, 40, 0, 2 * Math.PI);
+            cx.fillStyle = "red";
+            cx.fill();
+            //cx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        
+    </script>
+</body>
+</html>

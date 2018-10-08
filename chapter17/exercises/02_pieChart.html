@@ -17,9 +17,7 @@
             {name: "No comment", count: 175, color: "silver"}
         ];
 
-        let canvas = document.querySelector("canvas");
-        canvas.style.position = "relative";
-        let cx = canvas.getContext("2d");
+        let cx = document.querySelector("canvas").getContext("2d");
         let total = results
             .reduce((sum, {count}) => sum + count, 0);
         let currentAngle = -0.5 * Math.PI;
