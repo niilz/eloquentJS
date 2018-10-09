@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>mirror Image</title>
+</head>
+<body>
+    <canvas width="500" height="500"></canvas>
+    <style>
+    canvas {
+        border: 5px solid green;
+    }
+    </style>
+    <script>
+        // let cx = document.querySelector("canvas").getContext("2d");
+        let img = document.createElement("img");
+        img.src = "Small-mario.png";
+        // img.addEventListener("load", () => cx.drawImage(img, 0, 0));
+        
+        let invert = document.createElement("canvas");
+        invert.width = 500;
+        invert.height = 500;
+        document.body.appendChild(invert);
+        let ix = invert.getContext("2d");
+        img.addEventListener("load", () => {
+            ix.fillStyle = "blue";
+            ix.fillRect(0, 0, invert.width, invert.height);
+            ix.translate(100, 0);
+            ix.scale(-1, 1);
+            ix.drawImage(img, 0, 0, 400, 500,
+                              -300, 0, 400, 500);
+            
+        });
+        
+
+    </script>
+    
+</body>
+</html>
