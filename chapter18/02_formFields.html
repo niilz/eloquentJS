@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>different Form Fields</title>
+</head>
+<body>
+    <!-- form-fields without a form tag wrapped around cannot be submitted -->
+    <p><input type="text" value="abc">(text)</p>
+    
+    <p><input type="password" value="abc">(password)</p>
+
+    <p><input type="radio" value="A" name="choice">
+       <input type="radio" value="B" name="choice" checked>
+       <input type="radio" value="C" name="choice">(radio)</p>
+
+    <p><input type="file">(file)</p>
+
+
+    <!-- multiple lines have their own tag -->
+    <textarea>
+        one
+        two
+        three
+    </textarea>
+
+    <br>
+    <br>
+    <!-- selectable items can be done by options in a select tag -->
+    <select>
+        <option>breakfast</option>
+        <option>lunch</option>
+        <option>dinner</option>
+    </select>
+    
+</body>
+</html>

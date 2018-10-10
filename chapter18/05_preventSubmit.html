@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>prevent submit</title>
+</head>
+<body>
+    <!-- doesn't submit because of JS below -->
+    <form action="/chapter18/test.json">
+        Value: <input type="text" name="value">
+        <button type="submit">Save</button>
+    </form>
+
+    <script>
+        let form = document.querySelector("form");
+        form.addEventListener("submit", (e) => {
+            console.log("Saving value", form.elements.value);
+            // submitting gets prevented so that other
+            // behaviour can take place, like checking 
+            // for sufficient filling or to launch a 
+            // fetch-request instead
+            e.preventDefault();
+        });
+    </script>
+    
+</body>
+</html>

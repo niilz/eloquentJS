@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Form Fields</title>
+</head>
+<body>
+
+    <form method="GET" action="https://www.google.de/">
+        <p>Name: <input type="text" name="q"></p>
+        <p>Message:<br><textarea name="message"></textarea></p>
+        <p><button type="submit">Send</button></p>
+    </form>
+
+    <script>
+        // fetch("https://www.google.de", {
+        //     method: 'GET',
+        //     //mode: 'no-cors'
+        // }).then(response => {
+        //     console.log(response.status);
+        //     console.log(response.headers.get("Content-Type"));
+        // });
+
+        fetch("/chapter18/test.json")
+            .then(response => {
+                    console.log(response.status);
+                    console.log(response.headers.get("Content-Type"));
+                return response.text();
+            })
+            .then(text => console.log(text));
+            
+        // DELETE is not always allowed
+        // fetch("/chapter18/test.json", {method: "DELETE"})
+        //     .then(response => console.log(response));
+
+        fetch("/chapter18/test.json", {
+            headers: {
+                Range: "bytes=8-19"
+            }
+        }).then(response => {
+                    console.log(response.status);
+                    console.log(response.headers.get("Content-Type"));
+                return response.text();
+            })
+            .then(text => console.log(text));
+    </script>
+    
+</body>
+</html>

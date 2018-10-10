@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Focus</title>
+</head>
+<body>
+
+    <!-- jumps streight to th button after the input field -->
+    <input type="text" tabindex=1> <a href=".">(help)</a>
+    <button onclick="console.log('ok')" tabindex=2>OK</button>
+
+    <!-- form field can be disabled -->
+    <button>I'm active a lot</button>
+    <button disabled>I'm off</button>
+
+    <script>
+        document.querySelector("input").focus();
+        console.log(document.activeElement.tagName);
+        // INPUT
+        document.querySelector("input").blur();
+        console.log(document.activeElement.tagName);
+        // BODY
+        document.querySelector("input").focus();
+        console.log(document.activeElement.tagName);
+        // INPUT
+    </script>
+    
+</body>
+</html>
