@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>file fields</title>
+</head>
+<body>
+    <!-- with multiple -> several files can be chosen -->
+    <input type="file">
+    <input type="file" id="content" multiple>
+    <script>
+        let input = document.querySelector("input");
+        input.addEventListener("change", () => {
+            if (input.files.length > 0) {
+                let file = input.files[0];
+                console.log("You chose", file.name);
+                if (file.type) console.log("It has type", file.type);
+            }
+        });
+
+        // the selected file ha no content-property
+        // to tet to the content the following must be done (async)
+        let content = document.querySelector("#content");
+        content.addEventListener("change", () => {
+            for (let file of Array.from(content.files)) {
+                let reader = new FileReader();
+                reader.addEventListener("load", () => {
+                    console.log("File", file.name, "starts with",
+                                reader.result.slice(0, 20));
+                })
+                reader.readAsText(file);
+            }
+        });
+
+        // it could be wrapped in a promise
+        function readFileText(file) {
+            return new Promise((resolve, reject) => {
+                let reader = new FileReader();
+                reader.addEventListener(
+                    "load", () => resolve(reader.result));
+                reader.addEventListener(
+                    "error", () => reject(reader.error));
+                reader.readAsText(file);
+            });
+        }
+    </script>
+    
+</body>
+</html>

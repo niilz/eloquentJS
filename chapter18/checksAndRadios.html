@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Checks and Radios</title>
+</head>
+<body>
+    <!-- labels belong to an input field. Clicking on the label
+          activates this field -->
+    <label>
+        <input type="checkbox" id="purple">Make this page purple
+    </label>
+
+    <!-- only one radio Button can be active at the same time
+         they have all the same name -->
+    Color:
+    <label>
+        <input type="radio" name="color" value="orange"> Orange
+    </label>
+    <label>
+        <input type="radio" name="color" value="lightgreen"> Green
+    </label>
+    <label>
+        <input type="radio" name="color" value="lightblue"> Blue
+    </label>
+
+    <script>
+        // js for first labe (checkbox)
+        let checkbox = document.querySelector("#purple");
+        checkbox.addEventListener("change", () => {
+            document.body.style.background =
+                checkbox.checked ? "mediumpurple" : "";
+        });
+
+        // js for radio-buttons
+        let buttons = document.querySelectorAll("[name=color]"); // this matches elements where the "name" is "color"
+        for (let button of Array.from(buttons)) {
+            button.addEventListener("change", () => {
+                document.body.style.background = button.value;
+            });
+        }
+    </script>
+    
+</body>
+</html>

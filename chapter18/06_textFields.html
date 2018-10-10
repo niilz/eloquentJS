@@ -7,6 +7,28 @@
     <title>Text Fields</title>
 </head>
 <body>
+    <p>The Name "Khasekhemwy" can be added by pressing "F2"</p>
+    <textarea name="" id="" cols="30" rows="10"></textarea>
+
+    <script>
+        let textarea = document.querySelector("textarea");
+        textarea.addEventListener("keydown", event => {
+            if (event.keyCode == 113) {
+                replaceSelection(textarea, "Khasekhemwy");
+                event.preventDefault();
+            }
+        });
+
+        function replaceSelection(field, word) {
+            let from = field.selectionStart, to = field.selectionEnd;
+            field.value = field.value.slice(0, from) + word + 
+                          field.value.slice(to);
+            // put cursor after word
+            field.selectionStart = from + word.length;
+            field.selectionEnd = from + word.length;
+        }
+    </script>
+
     
 </body>
 </html>

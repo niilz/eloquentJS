@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Change every Keystroke</title>
+</head>
+<body>
+    <!-- would normalle just fire change event if it loses focus -->
+    <input type="text"> length: <span id="length">0</span>
+
+    <script>
+        let text = document.querySelector("input");
+        let output = document.querySelector("#length");
+        text.addEventListener("input", () => {
+            output.textContent = text.value.length;
+        });
+    </script>
+    
+</body>
+</html>
