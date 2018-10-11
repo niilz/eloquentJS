@@ -8,7 +8,40 @@
 </head>
 <body>
 
-    
+    <script>
+        // text/plain
+        fetch("https://eloquentjavascript.net/author")
+            .then(res => res.text())
+            .then(text => console.log(text));
+        
+        // text/html
+        fetch("https://eloquentjavascript.net/author", {
+            headers: {
+                Accept: "text/html"
+            }
+        })
+            .then(res => res.text())
+            .then(text => console.log(text));
+
+        // application/json
+        fetch("https://eloquentjavascript.net/author", {
+            headers: {
+                Accept: "application/json"
+            }
+        })
+            .then(res => res.text())
+            .then(text => console.log(text));
+        
+        // rainbows + unicorns
+        fetch("https://eloquentjavascript.net/author", {
+            headers: {
+                Accept: "application/rainbows+unicorns"
+            }
+        })
+            .then(res => res.text())
+            .then(text => console.log(text));
+ 
+    </script>
     
 </body>
 </html>

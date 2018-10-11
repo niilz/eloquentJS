@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Version B Way Of Life</title>
+</head>
+<body>
+    <div id="grid"></div>
+    <button id="next">Next generation</button>
+
+    <script>
+        let grid = document.querySelector("#grid");
+        let button = document.querySelector("#next");
+        
+        // create initial State of cells (randomized)
+        let cellsPlan = [];
+        for (let row = 0; row < 30; row++) {
+            let row = [];
+            for (let col = 0; col < 30; col++) {
+                if (Math.random() > 0.5) row.push("#"); // dead
+                else row.push("."); // alive
+            }
+            cellsPlan.push(row);
+        }
+        
+        // a cell has coordinate, an alive boolean and an alive-Neighbor count
+        class Cell {
+            constructor(x, y, alive) {
+                this.x = x;
+                this.y = y;
+                this.alive = alive;
+                this.aliveNs = 0;
+            }
+        }
+        // takes a cell, the current state (with all cells) and the grid-plan (string)
+        function aliveNeighbors(cell, state, plan) {
+                let rows = plan.length - 1;
+                let cols = plan[0].length - 1;
+                let x = cell.x;
+                let y = cell.y;
+                // checking all neighbors (inside the grid-string)
+                if (x < cols) {
+                    check(cell, plan[y][x+1]); //check right
+                    if (y < rows) check(cell, plan[y+1][x+1]) //check diag right down
+                    if (y > 0) check(cell, plan[y-1][x+1]) //check diag right up
+                }
+                if (x > 0) {
+                    check(cell, plan[y][x-1]); // check left
+                    if (y < cols) check(cell, plan[y+1][x-1]) //check diag left down
+                    if (y > 0) check(cell, plan[y-1][x-1]) //check diag left up
+                }
+                if (y < cols) check(cell, plan[y+1][x]) // check down
+                if (y > 0) check(cell, plan[y-1][x]) // check up
+            }
+        
+        // the check function inside aliveNeighbors (adding alive neighbors to the current cell's aliveNs-attribute)
+        function check(cell, neighbor) {
+            if (neighbor == ".") cell.aliveNs +=1;
+        }
+        
+        // global state variable
+        let state;
+        // create the current state, based on the current plan-string
+        function createState(plan) {
+            let currentState = [];
+            for (let row = 0; row < plan.length; row++) {
+                for (let col = 0; col < plan[0].length; col++) {
+                    let alive = false;
+                    if (plan[row][col] == ".") alive = true; 
+                    let currentCell = new Cell(col, row, alive);
+                    currentState.push(currentCell);
+                }
+            }
+            for (let cell of currentState) {
+                aliveNeighbors(cell, currentState, cellsPlan);
+            }
+            state = currentState;
+        }
+
+        createState(cellsPlan)
+        
+        // update state according to rules
+        function updatePlan(state) {
+            let newPlan = cellsPlan;
+            
+            for (let cell of state) {
+                if (cell.alive && cell.aliveNs < 2 || cell.aliveNs > 3) cell.alive = false;
+                if (!cell.alive && cell.aliveNs == 3) cell.alive = true;
+                if (cell.alive) newPlan[cell.y][cell.x] = ".";
+                else newPlan[cell.y][cell.x] = "#";
+            }
+            cellsPlan = newPlan;
+        }
+
+        
+        // draw the grid, based on the current state
+        function drawGrid(state) {
+            for (let row of state) {
+                for (let cell of row) {
+                    let selectCell = document.createElement("input");
+                    selectCell.type = "checkbox";
+                    if (cell == ".") selectCell.checked = true;
+                    grid.appendChild(selectCell);
+                }
+                let br = document.createElement("br");
+                grid.appendChild(br);
+            }
+        }
+
+        drawGrid(cellsPlan);
+
+        button.addEventListener("click", () => {
+            while(grid.firstChild) grid.removeChild(grid.firstChild);
+            updatePlan(state);
+            createState(cellsPlan);
+            drawGrid(cellsPlan);
+        });
+    </script>
+    
+</body>
+</html>

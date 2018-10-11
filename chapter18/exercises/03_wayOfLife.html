@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Conway's way of life</title>
+</head>
+<body>
+    <div id="grid"></div>
+    <button id="next">Next Generation</button>
+
+    <script>
+        let grid = document.querySelector("#grid");
+        let button = document.querySelector("#next");
+        for (let row = 0; row <= 10; row++) {
+            for (let col = 0; col <= 10; col++) {
+                let cell = document.createElement("input");
+                cell.type = "checkbox";
+                cell.setAttribute("data-x", col);
+                cell.setAttribute("data-y", row);
+                grid.appendChild(cell);
+                if (Math.random() > 0.5) cell.checked = true;
+            }
+            let br = document.createElement("br");
+            grid.appendChild(br);
+        }
+
+        let state = document.querySelectorAll("[type=checkbox]");
+        function nextGen(state) {
+            let newState = Array.from(state).map((cell, i, arr) => {
+                let aliveNeighbors = 0;
+                function check(cell) {
+                    if (cell.checked) {
+                        aliveNeighbors += 1;
+                    }
+                }
+                let x = cell.getAttribute("x-date"), y = cell.getAttribute("y-data");
+                if (x >= 0 && x < 10) { check(arr[i + 1]) }// checkright}
+                    if (y > 0) { check(document.// check diag right above}
+                if (y >= 0 && y < 10) { // checkbelow}
+                    if (x < 10) { // check diag right below}
+                if (x > 0 && x <= 10) { // checkleft}
+                    if (y > 0) { // check diag left above}
+                if (y > 0 && y <= 10) {// chekabove}
+                    if (x < 10) // check diag left below
+                });
+
+        }
+
+        
+        nextGen(state);
+
+    </script>
+    
+</body>
+</html>
