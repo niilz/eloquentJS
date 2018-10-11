@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="01_theState.js"></script>
+    <title>in-line-event-props</title>
+</head>
+<body>
+    <script>
+        document.body.appendChild(elt("button", {
+            onclick: () => console.log("click")
+        }, "The button")); 
+        
+        document.body.addEventListener("pointerdown", () => {
+            console.log("pointeeeeed")
+        });
+
+    </script>
+</body>
+</html>
