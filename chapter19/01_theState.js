@@ -146,10 +146,32 @@ class PixelEditor {
         this.controls = controls.map(
             Control => new Control(state, config));
         // reduce adds space between controls
-        this.dom = elt("div", {}, this.canvas.dom, elt("br"), 
+        this.dom = elt("div", {
+            //EXERCISE::::START
+            tabIndex: 0,
+            onkeydown: event => this.keyDown(event, config)
+            //EXERCISE::::STOP
+        }, this.canvas.dom, elt("br"), 
                         ...this.controls.reduce(
                             (a, c) => a.concat(" ", c.dom), []));
     }
+
+        //EXERCISE::::START
+        keyDown(event, config) {
+            if (event.key == "z" && (event.ctrlKey || event.metaKey)) {
+                event.preventDefault();
+                config.dispatch({undo: true});
+            } else if (!event.ctrlKey && !event.metaKey && !event.altKey) {
+                for (let tool of Object.keys(config.tools)) {
+                    if (tool[0] == event.key) {
+                        event.preventDefault();
+                        config.dispatch({tool});
+                        return;
+                    }
+                }
+            }
+        }
+      
     syncState(state) {
         this.state = state;
         this.canvas.syncState(state.picture);
