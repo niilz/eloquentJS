@@ -247,3 +247,158 @@ function pick(pos, state, dispatch) {
 // ####### SAVING-AND-LOADING ########
 // ###################################
 
+// ###### Safe-Picture #######
+class SaveButton {
+    constructor(state) {
+        this.picture = state.picture;
+        this.dom = elt("button", {
+            onclick: () => this.save()
+        }, "💾 Save");
+    }
+    save() {
+        let canvas = elt("canvas");
+        // draws the entire pic to a canvas at a scale 1 (1px x 1px)
+        drawPicture(this.picture, canvas, 1);
+        // "toDataURL" has the entire data in the URL
+        // which gets linked to the "a"-link element
+        let link = elt("a", {
+            href: canvas.toDataURL(),
+            download: "pixelart.png"
+        });
+        document.body.appendChild(link);
+        // gets briefly clicked and than the link gets removed again
+        link.click();
+        link.remove();
+    }
+    syncState(state) { this.picture = state.picture; }
+}
+
+// ###### Load-Picture #######
+class LoadButton {
+    constructor(_, {dispatch}) {
+        this.dom = elt("button", {
+            onclick: () => startLoad(dispatch)
+        }, "📁 Load");
+    }
+    syncState() {}
+}
+// pretends to be an "file-input" (same behaviour
+// under the hodd but looks as we want)
+function startLoad(dispatch) {
+    let input = elt("input", {
+        type: "file",
+        onchange: () => finishLoad(input.files[0], dispatch)
+    });
+    document.body.appendChild(input);
+    input.click();
+    input.remove();
+}
+
+// selected user picture gets loaded via "FileReader"
+// and readAsDataURL, but we have no access to Pixels yet
+function finishLoad(file, dispatch) {
+    if (file == null) return;
+    let reader = new FileReader();
+    reader.addEventListener("load", () => {
+        let image = elt("img", {
+            onload: () => dispatch({
+                picture: pictureFromImage(image)
+            }),
+            src: reader.result
+        });
+    });
+    reader.readAsDataURL(file);
+}
+
+// to get access to pixels: first draw the chosen
+// picture to canvas
+function pictureFromImage(image) {
+    // picture is limited to 100px (for performance reasons)
+    let width = Math.min(100, image.width);
+    let height = Math.min(100, image.height);
+    let canvas = elt("canvas", {width, height});
+    let cx = canvas.getContext("2d");
+    cx.drawImage(image, 0, 0);
+    let pixels = [];
+    // Data contains an array of color-components
+    // for each pixel (r,g,b,alpha)
+    let {data} = cx.getImageData(0, 0, width, height);
+    
+    function hex(n) {
+        // padStart pads the string with the second arg
+        // until the given length is reached
+        // and toString(base) transforms the number
+        // to base 16 (hex-value)
+        return n.toString(16).padStart(2, "0");
+    }
+    for (let i = 0; i < data.length; i += 4) {
+        let [r, g, b] = data.slice(i, i + 3);
+        pixels.push("#" + hex(r) + hex(g) + hex(b));
+    }
+    return new Picture(width, height, pixels);
+}
+
+// ####### UNDO-HISTORY #######
+function historyUpdateState(state, action) {
+    if (action.undo == true) {
+        // if nothing changed -> just return same picture
+        if (state.done.length == 0) return state;
+        return Object.assign({}, state, {
+            picture: state.done[0],
+            done: state.done.slice(1),
+            doneAt: 0
+        });
+    // if last picture is older than one second
+    // store a new last picture
+    } else if (action.picture &&
+               state.doneAt < Date.now() - 1000) {
+      return Object.assign({}, state, action, {
+        done: [state.picture, ...state.done],
+        doneAt: Date.now()
+      });
+    } else {
+        return Object.assign({}, state, action);
+    }
+}
+
+// ####### Undo-Button ########
+class UndoButton {
+    constructor(state, {dispatch}) {
+        this.dom = elt("button", {
+            onclick: () => dispatch({undo: true}),
+            disabled: state.done.length == 0
+        }, "⏮ Undo");
+    }
+    syncState(state) {
+        this.dom.disabled = state.done.length == 0;
+    }
+}
+
+// CREATE initial STATE
+const startState = {
+    tool: "draw",
+    color: "#000000",
+    picture: Picture.empty(60, 30, "#f0f0f0"),
+    done: [],
+    doneAt: 0
+};
+
+const baseTools = {draw, fill, rectangle, pick};
+
+const baseControls = [
+    ToolSelect, ColorSelect, SaveButton, LoadButton, UndoButton
+];
+
+function startPixelEditor({state = startState,
+                           tools = baseTools,
+                           controls = baseControls}) {
+    let app = new PixelEditor(state, {
+        tools,
+        controls,
+        dispatch(action) {
+            state = historyUpdateState(state, action);
+            app.syncState(state);
+        }
+    });
+    return app.dom;
+}
