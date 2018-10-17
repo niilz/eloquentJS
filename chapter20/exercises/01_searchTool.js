@@ -11,7 +11,6 @@ const {readFileSync} = require("fs");
 let args = process.argv.slice(2);
 let pattern = args[0];
 let files = args.slice(1);
-console.log(pattern, files);
 
 function read(filename) {
     try {
@@ -26,17 +25,10 @@ function check(pattern, files) {
     pattern = new RegExp(pattern);
     let filtered = files.filter(file => {
         let current = read(file);
-        return current.search(/lorem/) 
+        return current.search(pattern); 
     });
     return filtered;
 }
 
 let t = check(pattern, files);
 console.log(t);
-
-
-
-// files.map(file => {
-    
-// })
-//console.log(args);
